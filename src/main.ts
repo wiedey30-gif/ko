@@ -1,15 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { FileLogger } from './file-logger'; // Импортируем наш логгер
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  // Включаем CORS, чтобы мобильное приложение могло делать запросы
-  app.enableCors(); 
+  const app = await NestFactory.create(AppModule, {
+    logger: new FileLogger(), // <-- Включаем его здесь
+  });
   
-  // Префикс для всех маршрутов API
+  app.enableCors(); 
   app.setGlobalPrefix('api/v1'); 
 
   await app.listen(3000);
-  console.log(`Backend is running on: ${await app.getUrl()}`);
+  
+  // Используем новый логгер и здесь
+  new FileLogger().log(`Backend is running on: ${await app.getUrl()}`);
 }
 bootstrap();

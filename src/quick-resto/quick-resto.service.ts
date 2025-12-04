@@ -78,5 +78,9 @@ export class QuickRestoService {
       }),
     );
     return response.data;
-  }
+  }// В quick-resto.service.ts добавьте:
+async updateObject(moduleName: string, className: string, id: number, data: any) {
+  const url = `/api/update?moduleName=${moduleName}&className=${className}&id=${id}`;
+  return this.postCommand(url, data);
+}
 }
